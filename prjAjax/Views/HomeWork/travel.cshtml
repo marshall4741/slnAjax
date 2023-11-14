@@ -1,0 +1,47 @@
+﻿
+@{
+    ViewData["Title"] = "travel";
+}
+
+<h1>travel</h1>
+<div id="traveldiv" class="row row-cols-1 row-cols-md-2 g-4">
+    @*<div class="card" style="width: 18rem;">
+    <img src="..." class="card-img-top" alt="...">
+    <div class="card-body">
+        <h5 class="card-title">Card title</h5>
+        <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+        <a href="#" class="btn btn-primary">Go somewhere</a>
+    </div>
+        </div>*@
+</div>
+@section Scripts{
+    <script src="~/datas/travel.js"></script>
+    <script>
+        const datas = spots.CommonFormat.Section.map(spa => {
+            const { stitle, xbody, file } = spa;
+            if(spa.file){
+                if (spa.file.img){
+                    if (spa.file.img[0]) {
+                        if (spa.file.img[0].text) {
+                            //從spa拿到stitle, xbody, file三個元素`
+                            return (
+                                `
+                                <div class="card" style="width: 18rem;">
+                                    <img src="${file.img[0].text}" class="card-img-top" alt="沒有圖片">
+                                    <div class="card-body">
+                                                <h5 class="card-title">${stitle}</h5>
+                                                <p class="card-text">${xbody}</p>
+                                        <a href="#" class="btn btn-primary">Go somewhere</a>
+                                    </div>
+                                </div>
+                                         `
+                            )
+                        }
+                    }
+                }
+            }
+            
+        })// `` 中可以輸入 ${} 插入變數
+        document.querySelector('#traveldiv').innerHTML = datas.join("");
+    </script>
+}

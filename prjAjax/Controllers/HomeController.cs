@@ -7,11 +7,13 @@ namespace prjAjax.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
+        private readonly DemoContext _context;
 
-        public HomeController(ILogger<HomeController> logger)
+		public HomeController(ILogger<HomeController> logger, DemoContext context)
         {
             _logger = logger;
-        }
+            _context = context;
+		}
 
         public IActionResult Index()
         {
@@ -23,7 +25,17 @@ namespace prjAjax.Controllers
             return View();
         }
 
-        public IActionResult Privacy()
+        public IActionResult Register(string name)
+        {
+            return View();
+        }
+
+		public IActionResult Members()
+		{
+			return View(_context.Members);
+		}
+
+		public IActionResult Privacy()
         {
             return View();
         }

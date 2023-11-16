@@ -15,30 +15,67 @@ namespace prjAjax.Controllers
             _context = context;
 		}
 
+
+
         public IActionResult Index()
         {
             return View();
         }
+
+
 
         public IActionResult First()
         {
             return View();
         }
 
-        public IActionResult Register(string name)
+
+
+        public IActionResult Register()
         {
             return View();
         }
 
-		public IActionResult Members()
+
+        
+        public IActionResult Address()
+        {
+            //連結資料庫，將城市，鄉鎮，路名做成下拉式選單
+            return View();
+        }
+
+
+
+        public IActionResult Members()
 		{
 			return View(_context.Members);
 		}
 
-		public IActionResult Privacy()
+
+        
+        public IActionResult Promise()
+        {
+            //Promise 物件代表一個即將完成、或失敗的非同步操作，以及它所產生的值。
+            return View();
+        }
+
+
+        
+        public IActionResult Fetch()
+        {
+            //Fetch API 提供了一個能獲取包含跨網路資源在的資源介面。
+            //它有點像我們所熟悉的 XMLHttpRequest ，但這個新的 API 提供了更強更彈性的功能。
+            return View();
+        }
+
+
+
+        public IActionResult Privacy()
         {
             return View();
         }
+
+
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()

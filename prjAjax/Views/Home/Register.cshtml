@@ -13,7 +13,7 @@
         <form id="memberForm" method="post" action="~/api/register">
             <div class="mb-3">
                 <label for="inputName" class="form-label">姓名</label>
-                <input type="text" class="form-control" id="inputName" name="name" onblur="handleBlurEvent()">
+                <input type="text" class="form-control" id="inputName" name="name">
                 @*只要ViewModel中的類型名稱跟<input name="name">的"name"一樣，系統就會自動識別*@
                 <div id="idsp" class="alert alert-info"></div>
             </div>
@@ -45,64 +45,80 @@
         //const age = document.querySelector('#inputAge');
 
 
-        //事件
+        ////事件
         btn.addEventListener('click', event => {
 
             event.preventDefault();//不讓submit運作
 
 
-            //建立Ajax物件
-            const xhr = new XMLHttpRequest();
+        //    //建立Ajax物件
+        //    const xhr = new XMLHttpRequest();
 
-            //接收資料
-            xhr.addEventListener('load', () => {
-                const data = xhr.responseText;
-                divMessage.innerHTML = data;
-            })
+        //    //接收資料
+        //    xhr.addEventListener('load', () => {
+        //        const data = xhr.responseText;
+        //        divMessage.innerHTML = data;
+        //    })
 
-            //發出要求
-
-
-            xhr.open('POST', '@Url.Content("~/api/register")');
-
-            //傳單獨資料
-            ////用POST傳輸資料時，要把Content-Type:更改
-            //xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-            ////xhr.send('name=Jack&age=30&email=Jack@company.com');
-            //xhr.send(`name=${name.value}&age=${age.value}&email=${email.value}`);
+        //    //發出要求
 
 
-            //傳整個Form的資料
+        //    xhr.open('POST', '@Url.Content("~/api/register")');
+
+        //    //傳單獨資料
+        //    ////用POST傳輸資料時，要把Content-Type:更改
+        //    //xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+        //    ////xhr.send('name=Jack&age=30&email=Jack@company.com');
+        //    //xhr.send(`name=${name.value}&age=${age.value}&email=${email.value}`);
+
+
+        //    //傳整個Form的資料
             const formData = new FormData(document.querySelector('#memberForm'));
-            xhr.send(formData);
-        })
+        //    xhr.send(formData);
 
 
 
-
-
-        const SearchResult = document.querySelector("#idsp");
-        const nameinput = document.querySelector('#inputName');
-
-        //偵錯事件
-        nameinput.addEventListener('blur', () => {
-
-            event.preventDefault();//不讓submit運作
-
-            //建立Ajax物件
-            const xhr = new XMLHttpRequest();
-
-            console.log("AAAA");
-
-            //接收資料
-            xhr.addEventListener('load', () => {
-                const data = xhr.responseText;
-                SearchResult.innerHTML = data;
+            fetch('@Url.Content("~/api/register")', {
+                method: 'POST',
+                body: formData
             })
-
-
-            xhr.open('POST', '@Url.Content("~/api/register")');
-            xhr.send();
+                .then(response => {
+                    if (response.ok) {
+                        alert("新增成功");
+                        location.href = '@Url.Content("~/home/members")';
+                    }
+                })
         })
+
+        
+
+
+
+        //=====HomeWork=============================
+
+
+        //const SearchResult = document.querySelector("#idsp");
+        //const nameinput = document.querySelector('#inputName');
+
+        ////偵錯事件
+        //nameinput.addEventListener('blur', () => {
+
+        //    event.preventDefault();//不讓submit運作
+
+        //    //建立Ajax物件
+        //    const xhr = new XMLHttpRequest();
+
+        //    console.log("AAAA");
+
+        //    //接收資料
+        //    xhr.addEventListener('load', () => {
+        //        const data = xhr.responseText;
+        //        SearchResult.innerHTML = data;
+        //    })
+
+
+        //    xhr.open('POST', '@Url.Content("~/api/register")');
+        //    xhr.send();
+        //})
     </script>
 }

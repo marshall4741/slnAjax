@@ -1,0 +1,114 @@
+﻿
+@{
+    ViewData["Title"] = "Fetch";
+}
+
+<h1>Fetch</h1>
+@*Fetch API 提供了一個能獲取包含跨網路資源在的資源介面。
+它有點像我們所熟悉的 XMLHttpRequest ，但這個新的 API 提供了更強更彈性的功能。
+回傳一個帶有Response(回應)物件的已實現Promise物件。*@
+<div id="div1"></div>
+<img id="img1" />
+<ul id="ul1"></ul>
+
+@section Scripts{
+    <script>
+        //fetch(url路徑)
+        //    .then(response => response.json()) //我要的是"資料的json"，回傳Promise物件
+        //    .then(data => console.log(data))   
+        //    .catch(error => console.error('Error:', error));
+
+
+        //fetch('@Url.Content("~/api/index")?name=Mary&age=30')
+        //    .then(response => {
+        //        console.log(response);
+        //        console.log(response.ok);
+        //        console.log(response.status);
+        //         console.log(response.headers.get('Content-Type'));
+        //         console.log(response.headers.get('Content-Length'));
+        //         console.log(response.headers.get('Date'));
+        //         if(response.ok){
+        //           return  response.text();
+        //         }else{
+        //         }
+        //    })
+        //    .then(data=>{
+        //        console.log(data);
+        //    })
+
+
+
+
+        //fetch寫法
+        //api 回傳的是文字 透過 resposne.text()接收
+        //fetch('@Url.Content("~/api/index")?name=Mary&age=30')
+        //  //.then(response => return response.text()) //同一行return可省略
+        //    .then(response => response.text())      //取得從 "~/api/index?name=Mary&age=30" 回傳的內容
+
+        //  //.then(data => console.log(data))        //接到return的 "Promise物件後"，再用".then"解析內容
+        //    .then(data => document.querySelector('#div1').innerHTML = data);
+
+
+        //async寫法
+        async function loadText() {
+            const response = await fetch('@Url.Content("~/api/index")?name=Mary&age=30');
+            const data = await response.text();
+            document.querySelector('#div1').innerHTML = data
+        }
+        loadText();
+
+
+
+
+        //=================================================
+
+
+
+        //fetch寫法
+        //api 回傳的是JSON 透過 resposne.json()接收,收到的是一個promise物件
+        //fetch('@Url.Content("~/api/cities")')
+        //    .then(response => response.json())
+        //    .then(datas => {
+        //        const cities = datas.map(city => `<li>${city}</li>`)
+        //        document.querySelector('#ul1').innerHTML = cities.join("");
+        //    });
+
+
+        //async寫法
+        async function loadJson() {
+            const response = await fetch('@Url.Content("~/api/cities")');
+            const datas = await response.json();
+            const cities = datas.map(city => `<li>${city}</li>`)
+            document.querySelector('#ul1').innerHTML = cities.join("");
+        } 
+        loadJson();
+
+
+
+        //=================================================
+
+
+
+
+
+        //fetch寫法
+        //api 回傳的是圖透過 resposne.blob()接收,收到的是一個promise物件
+        //fetch('@Url.Content("~/api/GetImageByte/6")')
+        //    .then(response => response.blob())//blob()接收二進制資料
+        //    .then(datas => {
+        //        document.querySelector('#img1').src = URL.createObjectURL(datas);//藉由物件 URL 來顯示圖像
+        //    })
+
+
+
+
+
+        //async寫法
+        async function loadImage() {
+            const response = await fetch('@Url.Content("~/api/GetImageByte/6")');
+            const datas = await response.blob();
+            document.querySelector('#img1').src = URL.createObjectURL(datas);
+        }
+        loadImage();
+    </script>
+}

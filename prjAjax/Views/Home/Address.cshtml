@@ -1,0 +1,124 @@
+﻿
+@{
+    ViewData["Title"] = "Address";
+}
+
+<h1>Address</h1>
+@*連結資料庫，將城市，鄉鎮，路名做成下拉式選單*@
+
+<select id="selectCity"></select>
+<select id="selectDistrict"></select>
+<select id="selectRoad"></select>
+<div id="div1"></div>
+
+@section Scripts{
+    <script>
+        const selCity = document.querySelector('#selectCity');
+        const selDistrict = document.querySelector('#selectDistrict');
+        const selRoad = document.querySelector('#selectRoad');
+        const divInfo = document.querySelector('#div1');
+
+
+        //======當選項更新時，其他選項也會跟著更新=======================
+        selCity.addEventListener('change', () => {
+            loadDistrict();
+        })
+        selDistrict.addEventListener('change', () => {
+            loadRoad()
+        })
+        selRoad.addEventListener('change', () => {
+            divInfo.innerHTML = `${selDistrict.value}${selRoad.value}`
+        })
+        //============================================================
+
+
+
+        async function loadCity() {
+            const response = await fetch('@Url.Content("~/api/Cities")');
+            const datas = await response.json();
+            const cities = datas.map(city => `<option value='${city}'>${city}</option>`)
+            selCity.innerHTML = cities.join("");
+
+            //在更新城市選項時，也更新鄉鎮選項
+            loadDistrict();
+        }
+        loadCity();
+
+        //function loadCity() {
+        //    //ajax
+        //    //建立Ajax物件
+        //    const xhr = new XMLHttpRequest();
+
+        //    //接收資料
+        //    xhr.addEventListener('load', () => {
+
+        //        //把接收的資料轉成JSON物件
+        //        const datas = JSON.parse(xhr.responseText);
+
+        //        //增加<option>元件
+        //        const cities = datas.map(city => `<option value='${city}'>${city}</option>`)
+        //        selCity.innerHTML = cities.join("");
+
+
+        //        //在更新城市選項時，也更新鄉鎮選項
+        //        loadDistrict();
+        //    })
+
+        //    //傳資料
+        //    xhr.open('GET', '@Url.Content("~/api/Cities")');
+        //    xhr.send()
+        //}
+
+
+        async function loadDistrict() {
+            const response = await fetch(`@Url.Content("~/api/districts")?city=${selCity.value}`);
+            const datas = await response.json();
+            const districts = datas.map(district => `<option value='${district}'>${district}</option>`)
+            selDistrict.innerHTML = districts.join("");
+
+            //在更新鄉鎮選項時，也更新路名選項
+            loadRoad();
+        }
+        loadDistrict();
+
+
+        //function loadDistrict() {
+        //    //ajax
+        //    const xhr = new XMLHttpRequest();
+        //    xhr.addEventListener('load', () => {
+        //        const datas = JSON.parse(xhr.responseText);
+        //        const districts = datas.map(district => `<option value='${district}'>${district}</option>`)
+        //        selDistrict.innerHTML = districts.join("");
+
+        //        //在更新鄉鎮選項時，也更新路名選項
+        //        loadRoad();
+        //    })
+
+        //    xhr.open('GET', `@Url.Content("~/api/districts")?city=${selCity.value}`);
+        //    xhr.send()
+        //}
+
+
+        async function loadRoad() {
+            const response = await fetch(`@Url.Content("~/api/roads")?siteId=${selDistrict.value}`);
+            const datas = await response.json();
+            const roads = datas.map(road => `<option value='${road}'>${road}</option>`)
+            selRoad.innerHTML = roads.join("");
+        }
+        loadRoad();
+
+
+        //function loadRoad() {
+        //    //ajax
+        //    const xhr = new XMLHttpRequest();
+        //    xhr.addEventListener('load', () => {
+        //        const datas = JSON.parse(xhr.responseText);
+        //        const roads = datas.map(road => `<option value='${road}'>${road}</option>`)
+        //        selRoad.innerHTML = roads.join("");
+        //    })
+        //    xhr.open('GET', `@Url.Content("~/api/roads")?siteId=${selDistrict.value}`);
+        //    xhr.send()
+        //}
+        
+    </script>
+}
